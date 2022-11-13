@@ -29,15 +29,6 @@ class CurrentWeatherState extends WeatherState {
   List<Object> get props => [currentWeather];
 }
 
-class HourlyForecastsState extends WeatherState {
-  final HourlyForecasts hourlyForecasts;
-
-  const HourlyForecastsState({required this.hourlyForecasts});
-
-  @override
-  List<Object> get props => [hourlyForecasts];
-}
-
 class ErrorState extends WeatherState {
   final String errorMsg;
 

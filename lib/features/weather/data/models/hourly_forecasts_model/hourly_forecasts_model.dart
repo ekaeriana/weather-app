@@ -16,9 +16,9 @@ class HourlyForecastsModel extends HourlyForecasts {
       : super(cod: cod, message: message, cnt: cnt, list: list, city: city);
 
   factory HourlyForecastsModel.fromJson(Map<String, dynamic> json) {
-    List<CurrentWeather> currentWeatherToList(dynamic cw) {
+    List<CurrentWeatherModel> currentWeatherToList(dynamic cw) {
       final data = jsonDecode(jsonEncode(cw));
-      return List<CurrentWeather>.from(
+      return List<CurrentWeatherModel>.from(
           data.map((cw) => CurrentWeatherModel.fromJson(cw)));
     }
 
@@ -26,7 +26,7 @@ class HourlyForecastsModel extends HourlyForecasts {
       cod: json['cod'],
       message: json['message'],
       cnt: json['cnt'],
-      list: json['list'] != null ? currentWeatherToList(json['list']) : null,
+      list: json['list'] != null ? currentWeatherToList(json['list']) as List<CurrentWeather> : null,
       city: json['city'] != null
           ? CityModel.fromJson(json['city']) as City
           : null,

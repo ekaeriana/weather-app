@@ -4,10 +4,9 @@ import 'package:http/http.dart' as http;
 import 'package:weather_app/core/constants/api_utils.dart';
 import 'package:weather_app/core/error/exception.dart';
 import 'package:weather_app/features/weather/data/models/current_weather_model/current_weather_model.dart';
-import 'package:weather_app/features/weather/domain/entities/current_weather/current_weather_entity.dart';
 
 abstract class CurrentWeatherRemoteDataSource {
-  Future<CurrentWeather>? getCurrentWeather(String lat, String lon);
+  Future<CurrentWeatherModel>? getCurrentWeather(String lat, String lon);
 }
 
 class CurrentWeatherRemoteDataSourceImpl
@@ -17,7 +16,7 @@ class CurrentWeatherRemoteDataSourceImpl
   CurrentWeatherRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<CurrentWeather> getCurrentWeather(String lat, String lon) {
+  Future<CurrentWeatherModel> getCurrentWeather(String lat, String lon) {
     return getCurrentWeatherData(
       Uri.http(
         BASE_URL,
@@ -32,7 +31,7 @@ class CurrentWeatherRemoteDataSourceImpl
     );
   }
 
-  Future<CurrentWeather> getCurrentWeatherData(Uri uri) async {
+  Future<CurrentWeatherModel> getCurrentWeatherData(Uri uri) async {
     final response = await client.get(uri, headers: {
       'Content-Type': 'application/json',
     });

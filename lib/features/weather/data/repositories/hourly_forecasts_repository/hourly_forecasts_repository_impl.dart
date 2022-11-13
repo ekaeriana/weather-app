@@ -19,7 +19,7 @@ class HourlyForecastsRepositoryImpl extends HourlyForecastsRepository {
     if (await network.isConnected) {
       try {
         final hourlyForecasts = await hourlyForecastsRemoteDataSource
-            .getHourlyForecasts(cnt, lat, lon)!;
+            .getHourlyForecasts(lat, lon)!;
 
         return Right(hourlyForecasts);
       } on ServerException {

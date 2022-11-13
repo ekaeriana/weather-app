@@ -6,26 +6,26 @@ import 'package:weather_app/features/weather/data/models/hourly_forecasts_model/
 import 'package:http/http.dart' as http;
 
 abstract class HourlyForecastsRemoteDataSource {
-  Future<HourlyForecastsModel>? getHourlyForecasts(
-      int? cnt, String lat, String lon);
+  Future<HourlyForecastsModel>? getHourlyForecasts(String lat, String lon);
 }
 
 class HourlyForecastsRemoteDataSourceImpl
     implements HourlyForecastsRemoteDataSource {
   final http.Client client;
 
-  HourlyForecastsRemoteDataSourceImpl(this.client);
+  HourlyForecastsRemoteDataSourceImpl({required this.client});
 
   @override
-  Future<HourlyForecastsModel>? getHourlyForecasts(
-      int? cnt, String lat, String lon) {
-    return getHourlyForecastsData(Uri.http(BASE_URL, '/data/2.5/forecast', {
-      'cnt': cnt,
-      'lat': lat,
-      'lon': lon,
-      'units': 'matric',
-      'appid': API_KEY,
-    }));
+  Future<HourlyForecastsModel> getHourlyForecasts(String lat, String lon) {
+    return getHourlyForecastsData(
+      Uri.http(BASE_URL, '/data/2.5/forecast', {
+        'lat': lat,
+        'lon': lon,
+        'cnt': '4',
+        'units': 'metric',
+        'appid': API_KEY,
+      }),
+    );
   }
 
   Future<HourlyForecastsModel> getHourlyForecastsData(Uri uri) async {

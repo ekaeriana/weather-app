@@ -4,7 +4,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:weather_app/core/constants/page_utils.dart';
 import 'package:weather_app/dependency_injection.dart';
-import 'package:weather_app/features/weather/presentation/bloc/weather_bloc.dart';
+import 'package:weather_app/features/weather/presentation/bloc/hourly_forecasts_bloc/hourly_forecasts_bloc.dart';
+import 'package:weather_app/features/weather/presentation/bloc/weather_bloc/weather_bloc.dart';
 import 'package:weather_app/features/weather/presentation/widgets/drawer/custom_drawer.dart';
 
 class MyApp extends StatelessWidget {
@@ -18,8 +19,15 @@ class MyApp extends StatelessWidget {
 
     final zoomDrawerController = ZOOM_DRAWER_CONTROLLER;
 
-    return BlocProvider(
-      create: (context) => sl<WeatherBloc>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => sl<WeatherBloc>(),
+        ),
+        BlocProvider(
+          create: (context) => sl<HourlyForecastsBlocBloc>(),
+        ),
+      ],
       child: MaterialApp(
         title: 'Weather',
         theme: ThemeData(

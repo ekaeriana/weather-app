@@ -1,14 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/core/constants/color.dart';
-import 'package:weather_app/features/weather/domain/entities/current_weather/current_weather_entity.dart';
-import 'package:weather_app/features/weather/presentation/bloc/weather_bloc.dart';
 
-class ForecastCard extends StatelessWidget {
-  const ForecastCard({Key? key, this.weather, this.child}) : super(key: key);
+import '../../bloc/weather_bloc/weather_bloc.dart';
 
-  final CurrentWeather? weather;
+class ForecastCard extends StatefulWidget {
+  const ForecastCard({Key? key, this.child}) : super(key: key);
+
   final Widget? child;
+
+  @override
+  State<ForecastCard> createState() => _ForecastCardState();
+}
+
+class _ForecastCardState extends State<ForecastCard> {
+  @override
+  void initState() {
+    BlocProvider.of<WeatherBloc>(context)
+        .add(const GetCurrentWeather(lon: '115.1266', lat: '-8.5392'));
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,10 +40,17 @@ class ForecastCard extends StatelessWidget {
             ],
             borderRadius: BorderRadius.circular(30),
           ),
-          child:
-              BlocBuilder<WeatherBloc, WeatherState>(
-                builder: (context, currentWeatherState) {
-            if (currentWeatherState is CurrentWeatherState) {
+          child: BlocBuilder<WeatherBloc, WeatherState>(
+              builder: (context, state) {
+            if (state is EmptyState) {
+              return const SizedBox();
+            } else if (state is LoadingState) {
+              return const SizedBox(
+                height: 25,
+                width: 25,
+                child: CircularProgressIndicator(strokeWidth: 1.5),
+              );
+            } else if (state is CurrentWeatherState) {
               return Material(
                 type: MaterialType.transparency,
                 child: Column(
@@ -50,7 +68,7 @@ class ForecastCard extends StatelessWidget {
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  '${currentWeatherState.currentWeather.main?.temp?.toStringAsFixed(0)}',
+                                  '${state.currentWeather.main?.temp?.toStringAsFixed(0)}',
                                   style: const TextStyle(
                                       fontSize: 100,
                                       color: Colors.white60,
@@ -66,7 +84,7 @@ class ForecastCard extends StatelessWidget {
                               ],
                             ),
                             Text(
-                              'Feels like ${currentWeatherState.currentWeather.main?.temp?.toStringAsFixed(0)}',
+                              'Feels like ${state.currentWeather.main?.temp?.toStringAsFixed(0)}',
                               style: const TextStyle(
                                   fontSize: 21,
                                   color: Colors.white,
@@ -83,14 +101,14 @@ class ForecastCard extends StatelessWidget {
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
                             Text(
-                              '${currentWeatherState.currentWeather.weather?[0].main}',
+                              '${state.currentWeather.weather?[0].main}',
                               style: const TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold),
                             ),
                             Text(
-                              '${currentWeatherState.currentWeather.weather?[0].description}',
+                              '${state.currentWeather.weather?[0].description}',
                               style: const TextStyle(
                                 color: Colors.white,
                               ),
@@ -105,7 +123,7 @@ class ForecastCard extends StatelessWidget {
                         )
                       ],
                     ),
-                    if (child != null) child!
+                    if (widget.child != null) widget.child!
                   ],
                 ),
               );

@@ -25,14 +25,3 @@ class GetCurrentWeather extends WeatherEvent {
   @override
   List<Object> get props => [lat, lon];
 }
-
-class GetHourlyForecasts extends WeatherEvent {
-  final String lat;
-  final String lon;
-  final int cnt;
-
-  const GetHourlyForecasts({required this.cnt, required this.lat, required this.lon});
-
-  @override
-  List<Object> get props => [cnt, lat, lon];
-}
