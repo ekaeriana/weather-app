@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:line_icons/line_icons.dart';
 import 'package:weather_app/features/weather/presentation/widgets/home_page/foracast_card.dart';
 import 'package:weather_app/features/weather/presentation/widgets/home_page/forecast_details.dart';
 
 import '../../../../core/constants/color.dart';
+import '../widgets/next_seven_days/hourly_forecasts_list.dart';
 
 class NextSevenDaysPage extends StatefulWidget {
   const NextSevenDaysPage({super.key});
@@ -39,6 +39,8 @@ class _NextSevenDaysPageState extends State<NextSevenDaysPage>
             begin: Offset.zero.translate(0, 4), end: const Offset(0, 0))
         .animate(CurvedAnimation(
             parent: animationController, curve: Curves.fastOutSlowIn));
+
+    animationController.forward();
   }
 
   @override
@@ -49,12 +51,6 @@ class _NextSevenDaysPageState extends State<NextSevenDaysPage>
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(const SystemUiOverlayStyle(
-        statusBarIconBrightness: Brightness.light,
-        statusBarBrightness: Brightness.light));
-
-    animationController.forward();
-
     return Scaffold(
       extendBodyBehindAppBar: true,
       body: AnnotatedRegion<SystemUiOverlayStyle>(
@@ -164,8 +160,9 @@ class _NextSevenDaysPageState extends State<NextSevenDaysPage>
                                       Icon(
                                         Icons.cloudy_snowing,
                                         size: 30,
-                                        color:
-                                            index == 2 ? CustomColor.purple : Colors.white,
+                                        color: index == 2
+                                            ? CustomColor.purple
+                                            : Colors.white,
                                       ),
                                       const Spacer(),
                                       Text(
@@ -194,77 +191,31 @@ class _NextSevenDaysPageState extends State<NextSevenDaysPage>
                         const SizedBox(height: 20),
                         Expanded(
                           child: SingleChildScrollView(
-                            child: Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: Column(
-                                children: [
-                                  SlideTransition(
-                                    position: forecastOffset,
-                                    child: ForecastCard(
-                                      child: Column(children: const [
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        ForecastDetails(
-                                          tileColor: Colors.white30,
-                                          mainAxis:
-                                              MainAxisAlignment.spaceBetween,
-                                        ),
-                                        SizedBox(
-                                          height: 15,
-                                        ),
-                                      ]),
-                                    ),
+                            child: Column(
+                              children: [
+                                SlideTransition(
+                                  position: forecastOffset,
+                                  child: ForecastCard(
+                                    child: Column(children: const [
+                                      SizedBox(
+                                        height: 10,
+                                      ),
+                                      ForecastDetails(
+                                        tileColor: Colors.white30,
+                                        mainAxis:
+                                            MainAxisAlignment.spaceBetween,
+                                      ),
+                                      SizedBox(
+                                        height: 15,
+                                      ),
+                                    ]),
                                   ),
-                                  SlideTransition(
-                                    position: forecastOffset,
-                                    child: ListView.builder(
-                                      itemCount: 7,
-                                      shrinkWrap: true,
-                                      physics:
-                                          const NeverScrollableScrollPhysics(),
-                                      padding: const EdgeInsets.only(
-                                          top: 20, bottom: 20),
-                                      itemBuilder: (context, index) {
-                                        return Container(
-                                          padding: const EdgeInsets.symmetric(
-                                              vertical: 20, horizontal: 15),
-                                          margin:
-                                              const EdgeInsets.only(bottom: 10),
-                                          decoration: BoxDecoration(
-                                            color: Colors.white,
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            boxShadow: [
-                                              BoxShadow(
-                                                color: Colors.black
-                                                    .withOpacity(0.075),
-                                                blurRadius: 10.0,
-                                                offset: const Offset(0, 5),
-                                              ),
-                                            ],
-                                          ),
-                                          child: Row(
-                                            children: [
-                                              Text(DateFormat('dd MMM, EEEE')
-                                                  .format(DateTime.now())),
-                                              const Spacer(),
-                                              Text(DateFormat('27/32')
-                                                  .format(DateTime.now())),
-                                              const Spacer(),
-                                              const Icon(
-                                                Icons.sunny_snowing,
-                                                size: 30,
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ],
-                              ),
+                                ),
+                                SlideTransition(
+                                  position: forecastOffset,
+                                  child: const HourlyForecastsList(),
+                                )
+                              ],
                             ),
                           ),
                         )

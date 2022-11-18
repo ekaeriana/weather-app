@@ -21,7 +21,6 @@ class HourlyForecastsRemoteDataSourceImpl
       Uri.http(BASE_URL, '/data/2.5/forecast', {
         'lat': lat,
         'lon': lon,
-        'cnt': '4',
         'units': 'metric',
         'appid': API_KEY,
       }),

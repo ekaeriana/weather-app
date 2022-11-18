@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:line_icons/line_icons.dart';
+import 'package:weather_app/core/constants/page_utils.dart';
 
 class MenuDrawer extends StatefulWidget {
   const MenuDrawer({super.key});
@@ -42,10 +43,12 @@ class _MenuDrawerState extends State<MenuDrawer> {
             const SizedBox(height: 15),
             const Text(
               'I Wayan Eka Eriana',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                  fontSize: kBodyTextSize, fontWeight: FontWeight.bold),
             ),
-            const Text('eka.erian10@gmail.com',
-                style: TextStyle(color: Colors.grey)),
+            Text('eka.erian10@gmail.com',
+                style: TextStyle(
+                    fontSize: kSubtitleTextSize, color: Colors.grey.shade600)),
             const SizedBox(height: 30),
             MenuTile(
               title: 'Find City',
@@ -93,7 +96,8 @@ class MenuTile extends StatelessWidget {
       minLeadingWidth: 5,
       title: Text(
         title,
-        style: const TextStyle(fontWeight: FontWeight.bold),
+        style: const TextStyle(
+            fontSize: kBodyTextSize, fontWeight: FontWeight.bold),
       ),
       leading: Icon(icon, color: Colors.blueAccent),
       onTap: onTap,

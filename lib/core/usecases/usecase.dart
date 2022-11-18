@@ -33,10 +33,11 @@ class CurrentWeatherParams extends Equatable {
 
 class HourlyForecastsParams extends Equatable {
   final int? cnt;
+  final String? datetime;
   final String lat;
   final String lon;
 
-  const HourlyForecastsParams({this.cnt, required this.lat, required this.lon});
+  const HourlyForecastsParams({this.cnt, this.datetime, required this.lat, required this.lon});
 
   @override
   List<Object?> get props => [cnt, lat, lon];

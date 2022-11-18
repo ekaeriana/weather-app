@@ -1,5 +1,6 @@
-import 'package:bloc/bloc.dart';
+
 import 'package:equatable/equatable.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:weather_app/features/weather/domain/usecases/hourly_forecasts_usecase/hourly_forecasts_usecase.dart';
 
 import '../../../../../core/usecases/usecase.dart';

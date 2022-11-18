@@ -14,8 +14,8 @@ class HourlyForecastsRepositoryImpl extends HourlyForecastsRepository {
       {required this.hourlyForecastsRemoteDataSource, required this.network});
 
   @override
-  Future<Either<Failure, HourlyForecasts>> getDataHourlyForecasts(
-      int? cnt, String lat, String lon) async {
+  Future<Either<Failure, HourlyForecasts>> getDataHourlyForecasts({
+      int? cnt, String? datetime, required String lat, required String lon}) async {
     if (await network.isConnected) {
       try {
         final hourlyForecasts = await hourlyForecastsRemoteDataSource

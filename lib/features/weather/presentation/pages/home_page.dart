@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:intl/intl.dart';
+import 'package:weather_app/core/constants/page_utils.dart';
 
 import '../widgets/home_page/foracast_card.dart';
 import '../widgets/home_page/forecast_details.dart';
@@ -40,28 +41,28 @@ class _HomePageState extends State<HomePage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20),
+                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               const Text(
                                 'Pangkung Tibah,\nTabanan',
                                 style: TextStyle(
-                                    fontSize: 24, fontWeight: FontWeight.w900),
+                                    fontSize: kTitleTextSize, fontWeight: FontWeight.w900),
                               ),
                               const SizedBox(height: 5),
                               Text(
                                 date,
                                 style: const TextStyle(
-                                    fontSize: 12, color: Colors.grey),
+                                    fontSize: kSubtitleTextSize, color: Colors.grey),
                               ),
-                              const SizedBox(height: 40),
-                              const Hero(
-                                  tag: 'blue_container', child: ForecastCard()),
                             ],
                           ),
                         ),
-                        const SizedBox(height: 40),
+                        const SizedBox(height: 20),
+                        const Hero(
+                            tag: 'blue_container', child: ForecastCard()),
+                        const SizedBox(height: 15),
                         const Hero(
                             tag: 'forecast-details', child: ForecastDetails()),
                         const SizedBox(height: 40),

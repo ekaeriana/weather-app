@@ -42,7 +42,6 @@ dependencies:
   internet_connection_checker: ^1.0.0+1
   intl: ^0.17.0
   line_icons: ^2.0.1
-  mockito: ^5.3.2
   shared_preferences: ^2.0.15
   sqflite: ^2.2.0+3
 
@@ -51,6 +50,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
 
+  mockito: ^5.3.2
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.

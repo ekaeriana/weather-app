@@ -13,7 +13,7 @@ class HourlyForecastsUsecase extends UseCase<HourlyForecasts, HourlyForecastsPar
   
   @override
   Future<Either<Failure, HourlyForecasts>?> call(HourlyForecastsParams param) { 
-    return hourlyForecastsRepository.getDataHourlyForecasts(param.cnt, param.lat, param.lon);
+    return hourlyForecastsRepository.getDataHourlyForecasts(cnt: param.cnt, lat: param.lat, lon: param.lon, datetime: param.datetime)!;
   }
   
 }
