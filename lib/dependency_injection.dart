@@ -15,6 +15,7 @@ import 'package:weather_app/features/weather/domain/usecases/hourly_forecasts_us
 import 'package:weather_app/features/weather/domain/usecases/location_usecase/location_usecase.dart';
 import 'package:http/http.dart' as http;
 import 'package:weather_app/features/weather/presentation/bloc/hourly_forecasts_bloc/hourly_forecasts_bloc.dart';
+import 'package:weather_app/features/weather/presentation/bloc/location_bloc/location_bloc.dart';
 import 'package:weather_app/features/weather/presentation/bloc/weather_bloc/weather_bloc.dart';
 
 final sl = GetIt.instance;
@@ -30,6 +31,9 @@ Future<void> init() async {
     () => HourlyForecastsBlocBloc(
       getHourlyForecasts: sl(),
     ),
+  );
+  sl.registerFactory(
+    () => LocationBloc(getLocationUsecase: sl()),
   );
 
   sl.registerLazySingleton(() => GetLocationUsecase(sl()));

@@ -1,12 +1,9 @@
-import 'dart:convert';
-
-import 'package:weather_app/core/error/exception.dart';
-import 'package:weather_app/features/weather/data/models/location_model/location_model.dart';
+import 'package:geocoding/geocoding.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:http/http.dart' as http;
-import 'package:weather_app/core/constants/api_utils.dart';
 
 abstract class LocationRemoteDataSource {
-  Future<List<LocationModel>>? getDataLocation(int param);
+  Future<Placemark>? getDataLocation();
 }
 
 class LocationDataSourceImpl implements LocationRemoteDataSource {
@@ -15,35 +12,47 @@ class LocationDataSourceImpl implements LocationRemoteDataSource {
   LocationDataSourceImpl({required this.client});
 
   @override
-  Future<List<LocationModel>>? getDataLocation(int locationId) {
-    return _getLocationData(
-      Uri.https(
-        BASE_URL,
-        '/geo/1.0/direct',
-        {
-          'q': 'Tabanan,Bali,ID',
-          'appid': API_KEY,
-        },
-      ),
-    );
+  Future<Placemark>? getDataLocation() {
+    return _getLocationData();
   }
 
-  Future<List<LocationModel>> _getLocationData(Uri uri) async {
-    final response = await client.get(uri, headers: {
-      'Content-Type': 'application/json',
-    });
+  Future<Placemark> _getLocationData() async {
+    bool serviceEnabled;
+    LocationPermission permission;
 
-    if (response.statusCode == 200) {
-      var res = jsonDecode(response.body);
-      final data = forecastsList(res);
-      return data;
-    } else {
-      throw ServerException();
+    // Test if location services are enabled.
+    serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      // Location services are not enabled don't continue
+      // accessing the position and request users of the
+      // App to enable the location services.
+      return Future.error('Location services are disabled.');
     }
-  }
 
-  List<LocationModel> forecastsList(dynamic jsonData) {
-    return List<LocationModel>.from(
-        jsonData.map((e) => LocationModel.fromJson(e)));
+    permission = await Geolocator.checkPermission();
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        // Permissions are denied, next time you could try
+        // requesting permissions again (this is also where
+        // Android's shouldShowRequestPermissionRationale
+        // returned true. According to Android guidelines
+        // your App should show an explanatory UI now.
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      // Permissions are denied forever, handle appropriately.
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    Position location = await Geolocator.getCurrentPosition();
+    
+    List<Placemark>? positions =
+        await placemarkFromCoordinates(location.latitude, location.longitude);
+
+    return positions[0];
   }
 }

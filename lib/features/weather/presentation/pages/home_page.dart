@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_app/core/constants/page_utils.dart';
+import 'package:weather_app/dependency_injection.dart';
+import 'package:weather_app/features/weather/presentation/bloc/location_bloc/location_bloc.dart';
 
 import '../widgets/home_page/foracast_card.dart';
 import '../widgets/home_page/forecast_details.dart';
@@ -40,24 +43,38 @@ class _HomePageState extends State<HomePage> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 20.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              const Text(
-                                'Pangkung Tibah,\nTabanan',
-                                style: TextStyle(
-                                    fontSize: kTitleTextSize, fontWeight: FontWeight.w900),
-                              ),
-                              const SizedBox(height: 5),
-                              Text(
-                                date,
-                                style: const TextStyle(
-                                    fontSize: kSubtitleTextSize, color: Colors.grey),
-                              ),
-                            ],
-                          ),
+                        BlocBuilder<LocationBloc, LocationState>(
+                          bloc: sl<LocationBloc>()..add(const GetLocation()),
+                          builder: (context, state) {
+                            if (state is LoadingState) {
+                              return const LinearProgressIndicator();
+                            } else if (state is LoadedState) {
+                              return Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      state.location,
+                                      style: const TextStyle(
+                                          fontSize: kTitleTextSize,
+                                          fontWeight: FontWeight.w900),
+                                    ),
+                                    const SizedBox(height: 5),
+                                    Text(
+                                      date,
+                                      style: const TextStyle(
+                                          fontSize: kSubtitleTextSize,
+                                          color: Colors.grey),
+                                    ),
+                                  ],
+                                ),
+                              );
+                            } else {
+                              return Container();
+                            }
+                          },
                         ),
                         const SizedBox(height: 20),
                         const Hero(
