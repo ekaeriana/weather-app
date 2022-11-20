@@ -65,7 +65,7 @@ class _ForecastListState extends State<ForecastList> {
             ],
           ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 20),
         Hero(
           tag: 'forecasts-list',
           child: SizedBox(

@@ -35,7 +35,7 @@ class _HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
                 child: TopMenu(),
               ),
-              const SizedBox(height: 20),
+              const SizedBox(height: 30),
               Expanded(
                 child: SingleChildScrollView(
                   child: Padding(
@@ -76,7 +76,7 @@ class _HomePageState extends State<HomePage> {
                             }
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 30),
                         const Hero(
                             tag: 'blue_container', child: ForecastCard()),
                         const SizedBox(height: 15),
